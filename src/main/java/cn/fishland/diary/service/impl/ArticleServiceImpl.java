@@ -3,6 +3,7 @@ package cn.fishland.diary.service.impl;
 import cn.fishland.diary.dao.ArticleDao;
 import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.service.ArticleService;
+import cn.fishland.diary.vo.ArticleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,16 @@ public class ArticleServiceImpl implements ArticleService {
         } catch (Exception e) {
             log.error(String.format("delete article error=[%s]", e.getMessage()));
             return false;
+        }
+    }
+
+    @Override
+    public List<ArticleVo> getArticleVos() {
+        try {
+            return articleDao.selectVoAll();
+        } catch (Exception e) {
+            log.error(String.format("get article vo error:[%s]", e.getMessage()));
+            return null;
         }
     }
 }

@@ -19,4 +19,6 @@ public class AppConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/");
     }
 
+
+
 }

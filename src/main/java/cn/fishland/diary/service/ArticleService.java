@@ -1,6 +1,7 @@
 package cn.fishland.diary.service;
 
 import cn.fishland.diary.pojo.Article;
+import cn.fishland.diary.vo.ArticleVo;
 
 import java.util.List;
 
@@ -51,4 +52,11 @@ public interface ArticleService {
      * @return 删除是否成功
      */
     Boolean delete(Long id);
+
+    /**
+     * 获得文章vo对象
+     *
+     * @return 文章vo对象列表
+     */
+    List<ArticleVo> getArticleVos();
 }

@@ -1,6 +1,7 @@
 package cn.fishland.diary.dao;
 
 import cn.fishland.diary.pojo.Article;
+import cn.fishland.diary.vo.ArticleVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -31,4 +32,7 @@ public interface ArticleDao {
 
     @Update("update article set status = 0 where id = #{id};")
     void deleteById(Long id);
+
+    @Select("SELECT `id`,`createTime`,`updateTime`,`type`,`status`,`title`,`tag`,`description` from article where status = 1;")
+    List<ArticleVo> selectVoAll();
 }
