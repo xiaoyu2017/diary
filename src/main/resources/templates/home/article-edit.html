@@ -128,10 +128,68 @@
 
     const editorConfig = {
         placeholder: '请输入内容...',
+        MENU_CONF: {},
         onChange(editor) {
             // 也可以同步到 <textarea>
             $("#content").html(editor.getHtml());
             $("#description").html(editor.getText());
+        }
+    }
+
+    editorConfig.MENU_CONF['uploadImage'] = {
+        // 上传附件api
+        server: '/v1/home/attachment',
+        // server: '/api/upload-img-10s', // test timeout
+        // server: '/api/upload-img-failed', // test failed
+        // server: '/api/xxx', // test 404
+
+        // 超时
+        timeout: 5 * 1000, // 5s
+        fieldName: 'attachment',
+        // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
+        // meta: {token: 'xxx', a: 100},
+
+        // 将参数配置到连接中
+        metaWithUrl: false, // join params to url
+
+        // 自定义请求头
+        // headers: {Accept: 'text/x-json'},
+
+        // 单个文件的最大体积限制，默认为 2M
+        maxFileSize: 1 * 1024 * 1024, // 1M
+
+        // 设置文件低于5k转换成base64
+        base64LimitSize: 5 * 1024, // insert base64 format, if file's size less than 5kb
+
+        // 上传之前触发
+        onBeforeUpload(file) {
+            console.log('onBeforeUpload', file)
+
+            return file // will upload this file
+            // return false // prevent upload
+        },
+
+        // 上传进度的回调函数
+        onProgress(progress) {
+            console.log('onProgress', progress)
+        },
+
+        // 单个文件上传成功之后
+        onSuccess(file, res) {
+            console.log('onSuccess', res.data.attachmentId)
+            console.log('onSuccess', file,)
+        },
+
+        // 单个文件上传失败
+        onFailed(file, res) {
+            alert(res.message)
+            console.log('onFailed', file, res)
+        },
+
+        // 上传错误，或者触发 timeout 超时
+        onError(file, err, res) {
+            alert(err.message)
+            console.error('onError', file, err, res)
         }
     }
 
@@ -150,8 +208,10 @@
         config: toolbarConfig,
         mode: 'default', // or 'simple'
     });
-
-    editor.setHtml($("#content").attr('value'))
+    var html = $("#content").attr('value');
+    if (html != null && html.length > 0) {
+        editor.setHtml(html);
+    }
 </script>
 </body>
 </html>

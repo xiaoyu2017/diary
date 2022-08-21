@@ -44,7 +44,8 @@ public class HomeController extends VersionController {
     }
 
     @GetMapping("/home/article-edit")
-    public String articleEdit() {
+    public String articleEdit(Model model) {
+        model.addAttribute("update", 0);
         return "home/article-edit";
     }
 
