@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * pojo所有类的基类
  *
- * @author LessAnn
+ * @author xiaoyu
  * @version 1.0
  */
 public abstract class Pojo {

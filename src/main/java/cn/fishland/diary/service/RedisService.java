@@ -3,7 +3,7 @@ package cn.fishland.diary.service;
 /**
  * TODO
  *
- * @author LessAnn
+ * @author xiaoyu
  * @version 1.0
  */
 public interface RedisService {

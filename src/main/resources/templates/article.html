@@ -24,6 +24,9 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!--代码高亮-->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/monokai-sublime.min.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link th:href="@{/self/css/index.css}" rel="stylesheet">
 </head>
@@ -88,5 +91,7 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
 <script th:src="@{/js/self/offcanvas.js}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

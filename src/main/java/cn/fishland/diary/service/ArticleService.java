@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * TODO
  *
- * @author LessAnn
+ * @author xiaoyu
  * @version 1.0
  */
 public interface ArticleService {

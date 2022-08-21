@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * 请求连接版本控制基类
  *
- * @author LessAnn
+ * @author xiaoyu
  * @version 1.0
  */
 @RequestMapping("/v1")
