@@ -1,12 +1,13 @@
 package cn.fishland.diary.controller.v1;
 
-import cn.fishland.diary.controller.VersionController;
+import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.service.ArticleService;
 import cn.fishland.diary.vo.ArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -33,5 +34,12 @@ public class IndexController {
 
         model.addAttribute("articleVos", articleVos);
         return "index";
+    }
+
+    @GetMapping("/article/{id}")
+    public String article(@PathVariable Long id, Model model) {
+        Article article = articleService.getArticle(id);
+        model.addAttribute("article", article);
+        return "article";
     }
 }
