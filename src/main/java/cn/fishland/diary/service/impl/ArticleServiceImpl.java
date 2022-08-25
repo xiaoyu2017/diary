@@ -3,6 +3,7 @@ package cn.fishland.diary.service.impl;
 import cn.fishland.diary.dao.ArticleDao;
 import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.service.ArticleService;
+import cn.fishland.diary.util.DiaryUtil;
 import cn.fishland.diary.vo.ArticleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +68,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleVo> getArticleVos() {
+    public List<ArticleVo> getArticleVos(int page) {
         try {
-            return articleDao.selectVoAll();
+            return articleDao.selectVoPages((page - 1) * DiaryUtil.APP_INDEX_PAGE_NUMBER, DiaryUtil.APP_INDEX_PAGE_NUMBER);
         } catch (Exception e) {
             log.error(String.format("get article vo error:[%s]", e.getMessage()));
             return null;
+        }
+    }
+
+    @Override
+    public int getPageNumber() {
+        try {
+            int count = articleDao.count();
+            return (count + 15) / 16;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 }

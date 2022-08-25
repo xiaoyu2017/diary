@@ -33,6 +33,9 @@ public interface ArticleDao {
     @Update("update article set status = 0 where id = #{id};")
     void deleteById(Long id);
 
-    @Select("SELECT `id`,`createTime`,`updateTime`,`type`,`status`,`title`,`tag`,`description` from article where status = 1;")
-    List<ArticleVo> selectVoAll();
+    @Select("SELECT count(1) from article where status = 1;")
+    int count();
+
+    @Select("SELECT `id`,`createTime`,`updateTime`,`type`,`status`,`title`,`tag`,`description` from article where status = 1 order by createTime limit #{start}, #{size} ;")
+    List<ArticleVo> selectVoPages(int start, int size);
 }

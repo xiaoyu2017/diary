@@ -26,6 +26,7 @@ footer {
 
 
 .showP6Line {
+    min-height: 100px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;

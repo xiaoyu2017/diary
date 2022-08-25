@@ -58,5 +58,13 @@ public interface ArticleService {
      *
      * @return 文章vo对象列表
      */
-    List<ArticleVo> getArticleVos();
+    List<ArticleVo> getArticleVos(int page);
+
+    /**
+     * 获得文章页数
+     *
+     * @return 页数
+     */
+    int getPageNumber();
+
 }

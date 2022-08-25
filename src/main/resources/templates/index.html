@@ -67,7 +67,7 @@
             <p class="pull-right visible-xs">
                 <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">导航切换</button>
             </p>
-            <div class="jumbotron" style="background-image: url('/img/home-java.jpeg')">
+            <div class="jumbotron" style="background-image: url('/img/home-java.jpeg'); border: 1px solid #ddd;">
                 <a href="/" style="text-decoration: none;color: #000;">
                     <h1>记录自己遇到的坑</h1>
                     <p>一个记录自己在开发中遇到的坑，同时也推荐和分享一些工具知识。</p>
@@ -84,7 +84,7 @@
                             <div class="caption">
                                 <p class="showP2Line">[[${articleVo.title}]]</p>
                                 <p class="showP6Line">[[${articleVo.description}]]</p>
-                                <p class="showP6Line">
+                                <p class="showP2Line">
                                     <span class="label label-info">信息标签</span>
                                 </p>
                                 <p class="showP1LineTime">[[${#dates.format(articleVo.updateTime, 'yyyy年MM月dd日
@@ -97,13 +97,16 @@
 
             <div class="row" style="text-align: center;">
                 <ul class="pagination">
-                    <li><a href="#">«</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
+                    <li th:class="${pageIndex == 1 ? 'disabled':'' }">
+                        <a th:href="'/page/'+${pageIndex-1}">«</a>
+                    </li>
+                    <li th:each="num : ${#numbers.sequence(pageStart,pageEnd)}"
+                        th:class="${pageIndex == num ? 'active':''}">
+                        <a th:href="'/page/'+${num}">[[${num}]]</a>
+                    </li>
+                    <li th:class="${pageNumber == pageIndex ? 'disabled':'' }">
+                        <a th:href="'/page/'+${pageIndex+1}">»</a>
+                    </li>
                 </ul>
             </div>
         </div><!--/.col-xs-12.col-sm-9-->
