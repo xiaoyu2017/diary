@@ -51,7 +51,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
             AttachmentVo attachmentVo = new AttachmentVo();
             attachmentVo.setAlt(attachment1.getName());
-            String uri = "http://localhost:1204/v1/img/" + attachment1.getAttachmentId();
+            String uri = "/v1/img/" + attachment1.getAttachmentId();
             attachmentVo.setHref(uri);
             attachmentVo.setUrl(uri);
             attachmentVo.setAttachmentId(attachment1.getAttachmentId());

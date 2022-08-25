@@ -23,6 +23,11 @@ public class IndexController {
     @Autowired
     ArticleService articleService;
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping({"/", "/index"})
     public String index(Model model) {
         // 获得文章内容

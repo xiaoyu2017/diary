@@ -38,11 +38,6 @@ public class HomeController extends VersionController {
         return "home";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
     @GetMapping("/home/article-edit")
     public String articleEdit(Model model) {
         model.addAttribute("update", 0);
@@ -50,22 +45,21 @@ public class HomeController extends VersionController {
     }
 
     @GetMapping("/home/article-list")
-    public String articleList(Integer page,Model model) {
+    public String articleList(Integer page, Model model) {
         List<Article> articles = articleService.getArticles(page);
         model.addAttribute("articles", articles);
         return "home/article-list";
     }
 
     /* 数据请求 */
-
     @PostMapping("/login")
     public String check(User user, HttpSession session) {
         Boolean check = userService.userCheck(user, session);
         if (check) {
-            return "redirect:./home/home-edit";
+            return "redirect:./home/article-edit";
         }
         session.getServletContext().setAttribute("message", "用户名或密码不正确！");
-        return "login";
+        return "redirect:/login";
     }
 
     @PostMapping("/register")

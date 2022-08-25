@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -29,7 +29,7 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" action="login" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="form-signin" action="/v1/login" method="post" enctype="application/x-www-form-urlencoded">
         <h2 class="form-signin-heading">请进行登录</h2>
         <label for="inputName" class="sr-only">用户名</label>
         <input type="text" name="name" id="inputName" class="form-control" placeholder="用户名" required autofocus>
@@ -50,7 +50,6 @@
             [[${application.message}]]
         </div>
     </form>
-
 </div> <!-- /container -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>

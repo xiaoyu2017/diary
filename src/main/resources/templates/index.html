@@ -76,7 +76,7 @@
 
                 <div class="col-xs-6 col-lg-4" th:each="articleVo : ${articleVos}">
                     <div class="thumbnail">
-                        <a href="#" style="text-decoration: none;">
+                        <a th:href="'/article/'+${articleVo?.id}" style="text-decoration: none;">
                             <img style="height: 180px;" src="${articleVo.iconLink}" alt="缩略图">
                             <div class="caption">
                                 <p class="showP2Line">[[${articleVo.title}]]</p>
@@ -84,7 +84,8 @@
                                 <p class="showP6Line">
                                     <span class="label label-info">信息标签</span>
                                 </p>
-                                <p class="showP1LineTime">[[${#dates.format(articleVo.updateTime, 'yyyy年MM月dd日 HH:mm')}]]</p>
+                                <p class="showP1LineTime">[[${#dates.format(articleVo.updateTime, 'yyyy年MM月dd日
+                                    HH:mm')}]]</p>
                             </div>
                         </a>
                     </div>
@@ -139,7 +140,8 @@
     <hr>
 
     <footer>
-        <p>© 2022 Company, Inc.</p>
+        <p>© 2022 <a href="https://beian.miit.gov.cn/" rel="nofollow" target="_blank">皖ICP备2021015574号</a>
+        </p>
     </footer>
 
 </div><!--/.container-->
