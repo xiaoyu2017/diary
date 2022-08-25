@@ -17,4 +17,5 @@ public class ArticleVo extends Pojo {
     private String title;
     private String tag;
     private String description;
+    private String iconLink;
 }

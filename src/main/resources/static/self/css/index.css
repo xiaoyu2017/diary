@@ -28,7 +28,7 @@ footer {
 .showP6Line {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 5;
     overflow: hidden;
 }
 
@@ -56,6 +56,12 @@ footer {
  * Off Canvas
  * --------------------------------------------------
  */
+@media (min-width: 1350px) {
+    .container {
+        width: 1350px;
+    }
+}
+
 @media screen and (max-width: 767px) {
     .row-offcanvas {
         position: relative;
