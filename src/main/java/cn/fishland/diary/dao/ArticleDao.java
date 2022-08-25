@@ -36,6 +36,6 @@ public interface ArticleDao {
     @Select("SELECT count(1) from article where status = 1;")
     int count();
 
-    @Select("SELECT `id`,`createTime`,`updateTime`,`type`,`status`,`title`,`tag`,`description` from article where status = 1 order by createTime limit #{start}, #{size} ;")
+    @Select("SELECT `id`,`createTime`,`updateTime`,`type`,`status`,`title`,`tag`,`description` from article where status = 1 order by createTime DESC limit #{start}, #{size} ;")
     List<ArticleVo> selectVoPages(int start, int size);
 }

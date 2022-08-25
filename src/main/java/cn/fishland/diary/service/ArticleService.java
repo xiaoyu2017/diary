@@ -4,6 +4,7 @@ import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.vo.ArticleVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO
@@ -67,4 +68,10 @@ public interface ArticleService {
      */
     int getPageNumber();
 
+    /**
+     * 获得每日更新和每日热门内容
+     *
+     * @return 每日更新内容集合
+     */
+    Map<String, List<ArticleVo>> dailyData();
 }

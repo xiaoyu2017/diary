@@ -34,6 +34,7 @@ footer {
 }
 
 .showP2Line {
+    min-height: 46px;
     font-size: 16px;
     color: #000000;
     font-weight: bold;
@@ -52,6 +53,37 @@ footer {
     -webkit-line-clamp: 2;
     overflow: hidden;
 }
+
+/*排行榜前面的数字-start*/
+.c-index {
+    display: inline-block;
+    padding: 1px 0;
+    color: #fff;
+    width: 14px;
+    line-height: 100%;
+    font-size: 12px;
+    text-align: center;
+    background-color: #8eb9f5;
+}
+
+.c-gap-icon-right-small {
+    margin-right: 5px;
+}
+
+.c-index-hot, .c-index-hot1 {
+    background-color: #f54545;
+}
+
+.c-index-hot2 {
+    background-color: #ff8547;
+}
+
+.c-index-hot3 {
+    background-color: #ffac38;
+}
+
+/*排行榜前面的数字-end*/
+
 
 /*
  * Off Canvas

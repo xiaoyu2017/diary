@@ -5,11 +5,18 @@ import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.service.ArticleService;
 import cn.fishland.diary.util.DiaryUtil;
 import cn.fishland.diary.vo.ArticleVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -24,10 +31,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleDao articleDao;
 
+    @Autowired
+    StringRedisTemplate redisTemplate;
+
     @Override
     public Boolean addArticle(Article article) {
         try {
             articleDao.insert(article);
+            initDailyData();
             return true;
         } catch (Exception e) {
             log.error(String.format("add article error:[{%s}]", e.getMessage()));
@@ -39,6 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Boolean updateArticle(Article article) {
         try {
             articleDao.update(article);
+            initDailyData();
             return true;
         } catch (Exception e) {
             log.error(String.format("update article error:[%s]", e.getMessage()));
@@ -86,5 +98,61 @@ public class ArticleServiceImpl implements ArticleService {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public Map<String, List<ArticleVo>> dailyData() {
+        ListOperations<String, String> redisList = redisTemplate.opsForList();
+        Long dailyUpdateSize = redisList.size(DiaryUtil.REDIS_DAILY_UPDATE);
+        if (dailyUpdateSize <= 0) {
+            List<ArticleVo> articleVos = articleDao.selectVoPages(0, 10);
+            List<String> strings = articleVos.stream().map(ArticleVo::toJson).collect(Collectors.toList());
+
+            // 设置每日更新
+            redisList.rightPushAll(DiaryUtil.REDIS_DAILY_UPDATE, strings);
+            // 设置每日热门 TODO 这样设置是不正确的，等待访问统计实现再进行完善
+            redisList.rightPushAll(DiaryUtil.REDIS_DAILY_HOT, strings);
+            HashMap<String, List<ArticleVo>> map = new HashMap<>(2);
+            map.put("dailyUpdate", articleVos);
+            map.put("dailyHot", articleVos);
+            return map;
+        }
+
+        List<String> dailyUpdates = redisList.range(DiaryUtil.REDIS_DAILY_UPDATE, 0, dailyUpdateSize);
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ArticleVo> articleVos = dailyUpdates.stream().map(e -> {
+            try {
+                return objectMapper.readValue(e, ArticleVo.class);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
+
+        HashMap<String, List<ArticleVo>> map = new HashMap<>(2);
+        map.put("dailyUpdate", articleVos);
+        map.put("dailyHot", articleVos);
+        return map;
+    }
+
+    public void initDailyData() {
+        ListOperations<String, String> redisList = redisTemplate.opsForList();
+        Long dailyUpdateSize = redisList.size(DiaryUtil.REDIS_DAILY_UPDATE);
+        Long dailyHotSize = redisList.size(DiaryUtil.REDIS_DAILY_HOT);
+
+        if (dailyUpdateSize > 0) {
+            redisTemplate.delete(DiaryUtil.REDIS_DAILY_UPDATE);
+        }
+        if (dailyHotSize > 0) {
+            redisTemplate.delete(DiaryUtil.REDIS_DAILY_HOT);
+        }
+
+        List<ArticleVo> articleVos = articleDao.selectVoPages(0, 10);
+        List<String> strings = articleVos.stream().map(ArticleVo::toJson).collect(Collectors.toList());
+
+        // 设置每日更新
+        redisList.rightPushAll(DiaryUtil.REDIS_DAILY_UPDATE, strings);
+        // 设置每日热门 TODO 这样设置是不正确的，等待访问统计实现再进行完善
+        redisList.rightPushAll(DiaryUtil.REDIS_DAILY_HOT, strings);
     }
 }

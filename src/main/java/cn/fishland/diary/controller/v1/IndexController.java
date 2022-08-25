@@ -37,9 +37,8 @@ public class IndexController {
         // 页数
         int pageNumber = articleService.getPageNumber();
 
-        // 获得每日更新
-
-        // 获得热门文章
+        // 获得每日更新和每日热门
+        Map<String, List<ArticleVo>> dailyData = articleService.dailyData();
 
         model.addAttribute("articleVos", articleVos);
         model.addAttribute("pageStart", 1);
@@ -50,7 +49,7 @@ public class IndexController {
             model.addAttribute("pageEnd", pageNumber);
         }
         model.addAttribute("pageNumber", pageNumber);
-
+        model.addAttribute("dailyData", dailyData);
         return "index";
     }
 
@@ -62,24 +61,17 @@ public class IndexController {
         // 页数
         int pageNumber = articleService.getPageNumber();
 
-        // 获得每日更新
-
-        // 获得热门文章
+        // 获得每日更新和每日热门
+        Map<String, List<ArticleVo>> dailyData = articleService.dailyData();
 
         model.addAttribute("articleVos", articleVos);
         model.addAttribute("pageIndex", page);
-        if (pageNumber > 5) {
-            model.addAttribute("pageStart", page - 4);
-        } else {
-            model.addAttribute("pageStart", 1);
-        }
 
-        if (pageNumber > 5) {
-            model.addAttribute("pageEnd", page);
-        } else {
-            model.addAttribute("pageEnd", pageNumber);
-        }
+        model.addAttribute("pageStart", page > 5 ? page - 4 : 1);
+        model.addAttribute("pageEnd", page <= 5 ? Math.min(pageNumber, 5) : page);
+
         model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("dailyData", dailyData);
         return "index";
     }
 
