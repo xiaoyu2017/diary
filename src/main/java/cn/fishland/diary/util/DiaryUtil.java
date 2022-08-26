@@ -19,6 +19,7 @@ public class DiaryUtil {
     // App final keys
     /** 主页每页显示数量 */
     public final static int APP_INDEX_PAGE_NUMBER = 16;
-
+    /** 验证码 session key */
+    public final static String SESSION_KEY_IMAGE_CODE = "SESSION_KEY_IMAGE_CODE";
 
 }

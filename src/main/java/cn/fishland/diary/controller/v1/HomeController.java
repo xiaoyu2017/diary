@@ -5,7 +5,9 @@ import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.pojo.User;
 import cn.fishland.diary.service.ArticleService;
 import cn.fishland.diary.service.UserService;
+import cn.fishland.diary.util.DiaryUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +55,13 @@ public class HomeController extends VersionController {
 
     /* 数据请求 */
     @PostMapping("/login")
-    public String check(User user, HttpSession session) {
+    public String check(User user, String code, HttpSession session) {
+        // 判断验证码
+        if (StringUtils.isBlank(code) || !code.equalsIgnoreCase((String) session.getAttribute(DiaryUtil.SESSION_KEY_IMAGE_CODE))) {
+            session.getServletContext().setAttribute("message", "验证码不正确！");
+            return "redirect:/login";
+        }
+
         Boolean check = userService.userCheck(user, session);
         if (check) {
             return "redirect:./home/article-edit";
@@ -62,7 +70,7 @@ public class HomeController extends VersionController {
         return "redirect:/login";
     }
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public String register(User user, Model model) {
         if (user != null && user.getName() != null && user.getPassword() != null) {
             Boolean register = userService.register(user);
@@ -72,5 +80,5 @@ public class HomeController extends VersionController {
             return "register";
         }
         return "register";
-    }
+    }*/
 }

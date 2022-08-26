@@ -2,6 +2,8 @@ package cn.fishland.diary.controller.v1;
 
 import cn.fishland.diary.pojo.Article;
 import cn.fishland.diary.service.ArticleService;
+import cn.fishland.diary.util.DiaryUtil;
+import cn.fishland.diary.util.VerifyCode;
 import cn.fishland.diary.vo.ArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -81,4 +88,14 @@ public class IndexController {
         model.addAttribute("article", article);
         return "article";
     }
+
+    @GetMapping("/code/image")
+    public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        VerifyCode verifyCode = new VerifyCode();
+        BufferedImage image = verifyCode.getImage();
+        String code = verifyCode.getText();
+        request.getSession().setAttribute(DiaryUtil.SESSION_KEY_IMAGE_CODE, code);
+        ImageIO.write(image, "jpeg", response.getOutputStream());
+    }
+
 }

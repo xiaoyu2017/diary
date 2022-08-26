@@ -55,7 +55,7 @@ public class CheckFilter implements Filter {
         if (uri.equals("/login") || uri.equals("/register") || uri.equals("/") || uri.equals("/index")
                 || uri.matches("/article/.+") || uri.matches("/css/.+") || uri.matches("/img/.+")
                 || uri.matches("/js/.+") || uri.matches("/self/.+") || uri.equals("/v1/login")
-                || uri.matches("/v1/img/.+")|| uri.matches("/page/.+")) {
+                || uri.matches("/v1/img/.+") || uri.matches("/page/.+") || uri.equals("/code/image")) {
             return true;
         }
         return false;
