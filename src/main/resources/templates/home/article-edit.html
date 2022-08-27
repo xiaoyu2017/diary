@@ -131,8 +131,8 @@
         MENU_CONF: {},
         onChange(editor) {
             // 也可以同步到 <textarea>
-            $("#content").html(editor.getHtml());
-            $("#description").html(editor.getText());
+            $("#content").val(editor.getHtml());
+            $("#description").val(editor.getText());
         }
     }
 
