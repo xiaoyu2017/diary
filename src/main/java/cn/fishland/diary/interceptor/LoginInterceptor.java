@@ -1,15 +1,11 @@
-package cn.fishland.diary.filter;
+package cn.fishland.diary.interceptor;
 
 import cn.fishland.diary.pojo.User;
-import cn.fishland.diary.util.DiaryUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
@@ -18,25 +14,19 @@ import java.util.Objects;
  * @author xiaoyu
  * @version 1.0
  */
-@Slf4j
-//@Component
-public class CheckFilter implements Filter {
-
-    @Autowired
-    StringRedisTemplate redisTemplate;
+@Component
+public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-
-        // 登录放行所有
-        if (isLogin(httpServletRequest) || isPassLink(httpServletRequest)) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
-            // 不可放行的需要登录
-            servletRequest.setAttribute("error", "请先登录！");
-            httpServletRequest.getRequestDispatcher("/login").forward(servletRequest, servletResponse);
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String uri = request.getRequestURI();
+        System.out.println(">>>>" + uri);
+        // 是否登录
+        if (isLogin(request)) {
+            return true;
         }
+        response.sendRedirect("/login");
+        return false;
     }
 
     /**
@@ -49,9 +39,6 @@ public class CheckFilter implements Filter {
         // 判断是否为登录和注册请求
         String uri = request.getRequestURI();
 
-        // 记录api访问
-        countApiBrowse(uri);
-
         if (uri.equals("/login") || uri.equals("/register") || uri.equals("/") || uri.equals("/index")
                 || uri.matches("/article/.+") || uri.matches("/css/.+") || uri.matches("/img/.+")
                 || uri.matches("/js/.+") || uri.matches("/self/.+") || uri.equals("/v1/login")
@@ -59,10 +46,6 @@ public class CheckFilter implements Filter {
             return true;
         }
         return false;
-    }
-
-    private void countApiBrowse(String uri) {
-        redisTemplate.opsForHash().increment(DiaryUtil.REDIS_API_BROWSE_KEY, uri, 1L);
     }
 
     /**
